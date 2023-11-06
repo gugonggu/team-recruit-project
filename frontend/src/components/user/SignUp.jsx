@@ -1,45 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import firebase from "../firebase.js";
+import firebase from "../../firebase.js";
 import axios from "axios";
 
 function SignUp() {
     const navigate = useNavigate();
 
-    const [username, setUsername] = useState("");
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [depart, setDepart] = useState("");
     const [pw, setPw] = useState("");
     const [confirmPw, setConfirmPw] = useState("");
 
-    const [usernameFlag, setUsernameFlag] = useState(false);
-    const [usenameInfo, setUsernameInfo] = useState("");
-
     const [signupFlag, setSignupFlag] = useState(false);
-
-    const checkUsername = (e) => {
-        e.preventDefault();
-        if (!username) {
-            return alert("닉네임을 입력해주세요.");
-        }
-        const body = {
-            username: username,
-        };
-        axios
-            .post("/api/user/usernamecheck", body)
-            .then((res) => {
-                setUsernameFlag(true);
-                setUsernameInfo("사용 가능한 닉네임입니다.");
-            })
-            .catch((e) => {
-                setUsernameFlag(false);
-                setUsernameInfo("사용할 수 없는 닉네임입니다.");
-            });
-    };
 
     const signUpFunc = async (e) => {
         e.preventDefault();
         setSignupFlag(true);
-        if (!(username && email && pw && confirmPw)) {
+        if (!(name && email && depart && pw && confirmPw)) {
             return alert("모든 값을 채워주세요");
         }
         if (pw.length < 6) {
@@ -48,23 +26,21 @@ function SignUp() {
         if (pw !== confirmPw) {
             return alert("비밀번호가 같지 않습니다.");
         }
-        if (!usernameFlag) {
-            return alert("닉네임 중복 검사를 진행해 주세요");
-        }
         let createdUser = await firebase
             .auth()
             .createUserWithEmailAndPassword(email, pw);
-        await createdUser.user.updateProfile({ displayName: username });
+        await createdUser.user.updateProfile({ displayName: name });
 
         const body = {
             email: createdUser.user.multiFactor.user.email,
-            userName: createdUser.user.multiFactor.user.displayName,
+            name: createdUser.user.multiFactor.user.displayName,
+            department: depart,
             uid: createdUser.user.multiFactor.user.uid,
         };
         axios
             .post("/api/user/signup", body)
             .then((res) => {
-                navigate("/login");
+                navigate("/");
             })
             .catch((e) => {
                 console.log(e);
@@ -78,21 +54,24 @@ function SignUp() {
             <form>
                 <input
                     type="text"
-                    placeholder="닉네임"
+                    placeholder="이름"
                     required
-                    value={username}
-                    onChange={(e) => setUsername(e.currentTarget.value)}
+                    value={name}
+                    onChange={(e) => setName(e.currentTarget.value)}
                 ></input>
-                {usenameInfo}
-                <button onClick={(e) => checkUsername(e)}>
-                    닉네임 중복 검사
-                </button>
                 <input
                     type="email"
                     placeholder="이메일"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.currentTarget.value)}
+                ></input>
+                <input
+                    type="text"
+                    placeholder="소속 학과"
+                    required
+                    value={depart}
+                    onChange={(e) => setDepart(e.currentTarget.value)}
                 ></input>
                 <input
                     type="password"

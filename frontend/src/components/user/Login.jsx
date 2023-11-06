@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import firebase from "../firebase.js";
+import firebase from "../../firebase.js";
 
 function Login() {
     const navigate = useNavigate();
@@ -19,12 +19,9 @@ function Login() {
             await firebase.auth().signInWithEmailAndPassword(email, pw);
             navigate("/");
         } catch (e) {
-            if (e.code === "auth/user-not-found") {
-                setErrorMsg("존재하지 않는 이메일입니다.");
-            } else if (e.code === "auth/wrong-password") {
-                setErrorMsg("비밀번호가 일치하지 않습니다.");
+            if (e.code === "auth/invalid-login-credentials") {
+                setErrorMsg("존재하지 않는 이메일 / 비밀번호입니다.");
             } else {
-                console.log(e.code);
                 setErrorMsg("로그인에 실패했습니다.");
             }
         }

@@ -3,15 +3,21 @@ import { createSlice } from "@reduxjs/toolkit";
 export const userSlice = createSlice({
     name: "user",
     initialState: {
-        username: "",
+        name: "",
+        uid: "",
+        accessToken: "",
     },
     reducers: {
         loginUser: (state, action) => {
-            state.username = action.payload.displayName;
+            state.name = action.payload.displayName;
+            state.uid = action.payload.uid;
+            state.accessToken = action.payload.accessToken;
         },
 
         clearUser: (state) => {
-            state.username = "";
+            state.name = "";
+            state.uid = "";
+            state.accessToken = "";
         },
     },
 });
