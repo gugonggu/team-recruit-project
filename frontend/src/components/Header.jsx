@@ -1,16 +1,19 @@
 import { useNavigate } from "react-router-dom";
-
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
 import { HeaderDiv, StyledLink } from "../style/HeaderCSS.js";
-
-import firebase from "../firebase.js";
+import axios from "axios";
+import { clearUser } from "../reducer/userSlice.js";
 
 function Header() {
     const user = useSelector((state) => state.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const logoutHandler = () => {
-        firebase.auth().signOut();
+        axios.post("/api/user/logout").then((res) => {
+            if (res.data.success) {
+                dispatch(clearUser());
+            }
+        });
     };
 
     return (
@@ -20,7 +23,7 @@ function Header() {
                 <li>
                     <StyledLink to="/">홈</StyledLink>
                 </li>
-                {user.accessToken ? (
+                {user.user.email ? (
                     <>
                         <li
                             onClick={() => {
@@ -30,11 +33,13 @@ function Header() {
                         >
                             로그아웃
                         </li>
-                        {/* <li>
-                            <StyledLink to={`/user/${id}`}>
-                                마이 페이지
-                            </StyledLink>
-                        </li> */}
+                        {
+                            <li>
+                                <StyledLink to={`/user/${user.user._id}`}>
+                                    마이 페이지
+                                </StyledLink>
+                            </li>
+                        }
                     </>
                 ) : (
                     <>

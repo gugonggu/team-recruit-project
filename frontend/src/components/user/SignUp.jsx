@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import firebase from "../../firebase.js";
+import { useDispatch } from "react-redux";
 import axios from "axios";
+import { loginUser } from "../../reducer/userSlice";
 
 function SignUp() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -20,32 +22,31 @@ function SignUp() {
         if (!(name && email && depart && pw && confirmPw)) {
             return alert("모든 값을 채워주세요");
         }
-        if (pw.length < 6) {
-            return alert("비밀번호를 6글자 이상 입력해 주세요");
-        }
         if (pw !== confirmPw) {
             return alert("비밀번호가 같지 않습니다.");
         }
-        let createdUser = await firebase
-            .auth()
-            .createUserWithEmailAndPassword(email, pw);
-        await createdUser.user.updateProfile({ displayName: name });
 
         const body = {
-            email: createdUser.user.multiFactor.user.email,
-            name: createdUser.user.multiFactor.user.displayName,
+            name: name,
+            email: email,
+            pw: pw,
             department: depart,
-            uid: createdUser.user.multiFactor.user.uid,
         };
         axios
             .post("/api/user/signup", body)
             .then((res) => {
-                navigate("/");
+                if (res.data.success) {
+                    const { _id, name, email } = res.data.user;
+                    dispatch(loginUser({ _id, name, email }));
+                    navigate("/");
+                } else {
+                    return alert(res.data.errorMsg);
+                }
             })
             .catch((e) => {
                 console.log(e);
                 setSignupFlag(false);
-                return alert("회원가입에 문제가 발생했습니다.");
+                return alert("회원가입 중에 문제가 발생했습니다.");
             });
     };
 

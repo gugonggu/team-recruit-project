@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import firebase from "../../firebase.js";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { loginUser } from "../../reducer/userSlice";
 
 function Login() {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
@@ -16,14 +19,22 @@ function Login() {
         }
 
         try {
-            await firebase.auth().signInWithEmailAndPassword(email, pw);
-            navigate("/");
+            const body = {
+                email: email,
+                pw: pw,
+            };
+            axios.post("/api/user/login", body).then((res) => {
+                if (res.data.success) {
+                    const { _id, name, email } = res.data.user;
+                    dispatch(loginUser({ _id, name, email }));
+                    navigate("/");
+                } else {
+                    return alert(res.data.errorMsg);
+                }
+            });
         } catch (e) {
-            if (e.code === "auth/invalid-login-credentials") {
-                setErrorMsg("존재하지 않는 이메일 / 비밀번호입니다.");
-            } else {
-                setErrorMsg("로그인에 실패했습니다.");
-            }
+            console.log(e);
+            return alert("로그인 중에 오류가 발생했습니다.");
         }
     };
 
