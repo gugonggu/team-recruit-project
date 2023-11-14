@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { loginUser } from "../../reducer/userSlice";
 
+import { FormContainer, DefaultForm } from "../../style/FormCSS.js";
+
 function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -45,18 +47,23 @@ function Login() {
     }, [errorMsg]);
 
     return (
-        <div>
-            <form>
+        <FormContainer>
+            <DefaultForm>
+                <h1>로그인</h1>
+                <label htmlFor="email">이메일</label>
                 <input
+                    id="email"
                     type="email"
-                    placeholder="이메일"
+                    placeholder="이메일을 입력해주세요"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.currentTarget.value)}
                 ></input>
+                <label htmlFor="psw">비밀번호</label>
                 <input
+                    id="psw"
                     type="password"
-                    placeholder="비밀번호"
+                    placeholder="비밀번호를 입력해주세요"
                     required
                     value={pw}
                     onChange={(e) => setPw(e.currentTarget.value)}
@@ -69,8 +76,8 @@ function Login() {
                 >
                     로그인
                 </button>
-            </form>
-        </div>
+            </DefaultForm>
+        </FormContainer>
     );
 }
 

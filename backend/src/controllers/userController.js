@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import User from "../models/User.js";
 
 export const signUp = async (req, res) => {
-    const { name, email, pw, department } = req.body;
+    const { name, email, pw, grade, department, major } = req.body;
     const exists = await User.exists({ email: email });
     if (exists) {
         return res
@@ -10,7 +10,14 @@ export const signUp = async (req, res) => {
             .json({ success: false, errorMsg: "이미 존재하는 이메일 입니다" });
     }
     try {
-        const user = new User({ name, email, password: pw, department });
+        const user = new User({
+            name,
+            email,
+            password: pw,
+            grade,
+            department,
+            major,
+        });
         await user.save();
         req.session.loggedIn = true;
         req.session.user = user;

@@ -1,11 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { HeaderDiv, StyledLink } from "../style/HeaderCSS.js";
+import {
+    HeaderDiv,
+    StyledLink,
+    StyledLogoLink,
+    Nav,
+} from "../style/HeaderCSS.js";
 import axios from "axios";
 import { clearUser } from "../reducer/userSlice.js";
 
 function Header() {
-    const user = useSelector((state) => state.user);
+    const user = useSelector((state) => state.user.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const logoutHandler = () => {
@@ -18,13 +23,18 @@ function Header() {
 
     return (
         <HeaderDiv>
-            <StyledLink to="/">Header</StyledLink>
-            <ul>
+            <StyledLogoLink to="/">DURP</StyledLogoLink>
+            <Nav>
                 <li>
-                    <StyledLink to="/">홈</StyledLink>
+                    <StyledLink to="/upload">새 모집 글 작성</StyledLink>
                 </li>
-                {user.user.email ? (
+                {user.email ? (
                     <>
+                        <li>
+                            <StyledLink to={`/user/${user._id}`}>
+                                마이 페이지
+                            </StyledLink>
+                        </li>
                         <li
                             onClick={() => {
                                 logoutHandler();
@@ -33,13 +43,6 @@ function Header() {
                         >
                             로그아웃
                         </li>
-                        {
-                            <li>
-                                <StyledLink to={`/user/${user.user._id}`}>
-                                    마이 페이지
-                                </StyledLink>
-                            </li>
-                        }
                     </>
                 ) : (
                     <>
@@ -51,10 +54,7 @@ function Header() {
                         </li>
                     </>
                 )}
-                <li>
-                    <StyledLink to="/upload">새 모집 글 작성</StyledLink>
-                </li>
-            </ul>
+            </Nav>
         </HeaderDiv>
     );
 }

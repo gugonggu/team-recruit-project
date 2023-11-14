@@ -3,6 +3,9 @@ import { useSelector } from "react-redux";
 
 import { Routes, Route } from "react-router-dom";
 
+import reset from "./style/reset.js";
+import { Global } from "@emotion/react";
+
 import Header from "./components/Header";
 import MainPage from "./components/MainPage";
 import SignUp from "./components/user/SignUp";
@@ -22,6 +25,7 @@ function App() {
 
     return (
         <>
+            <Global styles={reset} />
             <Header />
             <Routes>
                 <Route path="/" element={<MainPage />}></Route>
