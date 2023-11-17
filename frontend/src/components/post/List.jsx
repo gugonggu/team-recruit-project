@@ -1,24 +1,36 @@
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { StyledLink } from "../../style/HeaderCSS.js";
 
-import moment from "moment";
-import "moment/locale/ko";
+import axios from "axios";
 
-function List({ list }) {
-    const setTime = (c) => {
-        return moment(c).format("YYYY년 MMMM Do, hh:mm");
-    };
+import ListItem from "./ListItem";
+import ListController from "./ListController";
+
+import { StyledList, ListContainer } from "../../style/post/ListCSS.js";
+
+function List() {
+    const [list, setList] = useState([]);
+    useEffect(() => {
+        axios.post("/api/post/list").then((res) => {
+            if (res.data.success) {
+                setList([...res.data.list]);
+            }
+        });
+    }, []);
 
     return (
-        <div>
-            {list.map((v, i) => {
-                return (
-                    <Link to={`/post/${v._id}`} key={i}>
-                        <p>{v.title}</p>
-                        <p>{setTime(v.createdAt)}</p>
-                    </Link>
-                );
-            })}
-        </div>
+        <StyledList>
+            <ListContainer>
+                {list.map((v, i) => {
+                    return (
+                        <StyledLink to={`/post/${v._id}`} key={i}>
+                            <ListItem value={v} />
+                        </StyledLink>
+                    );
+                })}
+            </ListContainer>
+            <ListController />
+        </StyledList>
     );
 }
 

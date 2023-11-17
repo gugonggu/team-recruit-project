@@ -1,7 +1,5 @@
 import styled from "@emotion/styled";
 
-import { motion } from "framer-motion";
-
 export const FormContainer = styled.div`
     display: flex;
     justify-content: center;
@@ -40,8 +38,53 @@ export const DefaultForm = styled.form`
         }
     }
 
-    div {
+    .gradeDiv {
+        position: relative;
         margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        input {
+            color: gray;
+        }
+        ul {
+            position: absolute;
+            z-index: 2;
+            left: 0;
+            top: 33px;
+            width: 100%;
+            padding-left: 0;
+            transform: translateY(40px);
+        }
+    }
+
+    input[type="button"] {
+        background-color: white;
+        cursor: pointer;
+    }
+    input:disabled {
+        cursor: not-allowed;
+    }
+
+    .selectDiv {
+        margin: 10px 0 10px 0;
+        display: flex;
+        justify-content: space-around;
+        div {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            label {
+                margin-top: 10px;
+                margin-right: 5px;
+            }
+            input {
+                color: gray;
+            }
+            input:disabled {
+                color: lightgray;
+            }
+        }
     }
 
     button {
@@ -58,32 +101,103 @@ export const DefaultForm = styled.form`
     }
 `;
 
-export const AlertBox = styled(motion.div)`
-    display: flex;
-    align-items: center;
-    position: absolute;
-    height: 45px;
-    width: calc(100% - 125px);
-    border: 1px solid tomato;
-    border-left: 10px solid tomato;
+export const PostForm = styled.form`
+    position: relative;
+    background-color: white;
     border-radius: 10px;
-    padding: 10px;
-    background-color: #ffd7d5;
-    div {
-        margin-left: 10px;
+    width: 65%;
+    margin: 20px;
+    padding: 0 50px 50px 50px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+    section {
+        h1 {
+            padding: 30px;
+            font-weight: bold;
+            font-size: 24px;
+            border-bottom: 2px solid lightgray;
+        }
+
+        .input_row {
+            display: flex;
+            margin-top: 50px;
+            .each_input {
+                width: 50%;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                label {
+                    font-size: 18px;
+                }
+                input {
+                    background-color: transparent;
+                    border: none;
+                    border-bottom: 1px solid lightgray;
+                    padding: 10px;
+                    margin: 0 20px;
+                    color: gray;
+                    &:focus {
+                        outline: none;
+                        border-bottom: 1px solid #e11837;
+                    }
+                }
+                ul {
+                    top: 50px;
+                    width: calc(100% - 40px);
+                    transform: translateX(20px);
+                }
+            }
+        }
+
+        .postTitle {
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            label {
+                font-size: 18px;
+            }
+            input {
+                border: none;
+                border-bottom: 1px solid lightgray;
+                padding: 10px;
+                margin: 10px;
+                &:focus {
+                    outline: none;
+                    border-bottom: 1px solid #e11837;
+                }
+            }
+        }
+
+        .quill {
+            margin-top: 10px;
+            .ql-toolbar {
+                .ql-formats {
+                    button {
+                        margin-top: 0px;
+                    }
+                }
+            }
+            .ql-container {
+                .ql-editor {
+                    min-height: 300px;
+                }
+            }
+        }
+        &:last-of-type {
+            margin-top: 100px;
+        }
     }
-    .close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
+
+    button {
+        background-color: #e11837;
+        color: white;
+        height: 40px;
+        float: right;
+        border: none;
+        margin-top: 20px;
+        border-radius: 20px;
+        width: 100px;
+        font-size: 18px;
         cursor: pointer;
-    }
-    .processBar {
-        position: absolute;
-        background-color: tomato;
-        height: 5px;
-        bottom: 0;
-        left: -11px;
-        border-radius: 10px;
     }
 `;

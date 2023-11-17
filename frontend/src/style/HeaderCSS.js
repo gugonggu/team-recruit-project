@@ -3,6 +3,9 @@ import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 
 export const HeaderDiv = styled.div`
+    position: sticky;
+    z-index: 99;
+    top: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -14,6 +17,9 @@ export const HeaderDiv = styled.div`
     ul {
         li {
             cursor: pointer;
+            a {
+                color: black;
+            }
         }
     }
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -34,5 +40,22 @@ export const Nav = styled.ul`
     display: flex;
     li {
         margin: 0px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    div {
+        position: relative;
+        display: flex;
+        div {
+            cursor: pointer;
+            transform: translateY(7px);
+        }
+        input {
+            border: none;
+            background-color: transparent;
+            font-size: 16px;
+            cursor: pointer;
+        }
     }
 `;

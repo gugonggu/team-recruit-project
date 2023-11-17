@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import { Routes, Route } from "react-router-dom";
 
-import reset from "./style/reset.js";
+import all from "./style/reset.js";
 import { Global } from "@emotion/react";
 
 import Header from "./components/Header";
@@ -25,7 +25,7 @@ function App() {
 
     return (
         <>
-            <Global styles={reset} />
+            <Global styles={all} />
             <Header />
             <Routes>
                 <Route path="/" element={<MainPage />}></Route>

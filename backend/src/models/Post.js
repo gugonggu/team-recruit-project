@@ -2,30 +2,36 @@ import mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema(
     {
+        projectType: { type: String, required: true },
+        numOfRecruit: { type: Number, required: true },
+        grade: { type: Number, required: true },
+        department: { type: String, required: true },
+        major: { type: String, required: true },
+        end: { type: Date, required: true },
         title: { type: String, required: true, trim: true },
+        content: { type: String, required: true },
         author: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true,
         },
-        projectType: { type: String, required: true },
-        NumOfRecruit: { type: Number },
-        begin: { type: Date },
-        end: { type: Date },
-        grade: { type: Number, required: true },
-        department: { type: String, required: true },
-        major: { type: String, required: true },
-        content: { type: String, required: true },
         comments: [
             {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Comment",
+                required: true,
             },
         ],
-        applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+        applicants: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                required: true,
+            },
+        ],
         meta: {
             views: { type: Number, required: true },
-            dibs: { type: Number, required: true },
+            stars: { type: Number, required: true },
         },
         recruiting: { type: Boolean, required: true },
     },

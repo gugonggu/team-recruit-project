@@ -2,12 +2,26 @@ import Post from "../models/Post.js";
 import User from "../models/User.js";
 
 export const upload = async (req, res) => {
-    const { title, content, userId } = req.body;
+    const { type, num, grade, depart, major, end, title, content, userId } =
+        req.body;
     try {
         const post = new Post({
+            projectType: type,
+            numOfRecruit: num,
+            grade: grade,
+            department: depart,
+            major: major,
+            end: end,
             title: title,
             content: content,
             author: userId,
+            comments: [],
+            applicants: [],
+            meta: {
+                views: 0,
+                stars: 0,
+            },
+            recruiting: true,
         });
         await post.save();
         const user = await User.findById(userId);
@@ -49,7 +63,7 @@ export const deletePost = async (req, res) => {
 };
 
 export const getList = async (req, res) => {
-    const list = await Post.find();
+    const list = await Post.find().populate("author");
     return res.status(200).json({ success: true, list: list });
 };
 
