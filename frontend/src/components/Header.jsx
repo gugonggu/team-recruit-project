@@ -41,7 +41,7 @@ function Header() {
 
     return (
         <HeaderDiv>
-            <StyledLogoLink to="/">DURP</StyledLogoLink>
+            <StyledLogoLink to="/">DRP</StyledLogoLink>
             <Nav>
                 <li>
                     <StyledLink to="/upload">새 모집 글 작성</StyledLink>

@@ -5,7 +5,7 @@ import { StyledListItem } from "../../style/post/ListCSS.js";
 import moment from "moment";
 import "moment/locale/ko";
 
-import { FaDoorOpen, FaDoorClosed, FaRegEye, FaStar } from "react-icons/fa6";
+import { FaRegEye, FaStar } from "react-icons/fa6";
 
 function ListItem({ value }) {
     const setTime = (c) => {
@@ -14,40 +14,24 @@ function ListItem({ value }) {
     return (
         <StyledListItem>
             <div className="titleContainer">
-                {value.recruiting ? (
-                    <div>
-                        <FaDoorOpen />
-                        <span>모집중</span>
-                    </div>
-                ) : (
-                    <div>
-                        <FaDoorClosed />
-                        <span>모집 마감</span>
-                    </div>
-                )}
                 <h3>{value.title}</h3>
+                <ListProjectType type={value.projectType} />
             </div>
             <div>
-                <ListProjectType type={value.projectType} />
-                {/*
-                    프로젝트 : 그린
-                    스터디 : 레드 or 옐로
-                    연구 : 블루
-                */}
-                <div>
-                    <p>학년 : {value.grade}</p>
+                <div className="info">
                     <p>학부 : {value.department}</p>
                     <p>전공 : {value.major}</p>
+                    <p>학년 : {value.grade === 11 ? "무관" : value.grade}</p>
                 </div>
             </div>
-            <div>
+            <div className="meta">
                 <div>
-                    <FaRegEye />
+                    <FaRegEye className="eye" />
                     <span>{value.meta.views}</span>
                 </div>
                 <div>
-                    <FaStar />
-                    <span>{value.meta.stars}</span>
+                    <FaStar className="star" />
+                    <span>{value.meta.likes}</span>
                 </div>
                 <p>모집 마감일 : {setTime(value.end)}</p>
             </div>

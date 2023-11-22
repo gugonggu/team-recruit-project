@@ -30,8 +30,8 @@ const postSchema = new mongoose.Schema(
             },
         ],
         meta: {
-            views: { type: Number, required: true },
-            stars: { type: Number, required: true },
+            views: { type: Number, required: true, default: 0 },
+            likes: { type: Number, required: true, default: 0 },
         },
         recruiting: { type: Boolean, required: true },
     },

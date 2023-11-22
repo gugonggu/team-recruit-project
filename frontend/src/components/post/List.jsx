@@ -9,14 +9,71 @@ import ListController from "./ListController";
 import { StyledList, ListContainer } from "../../style/post/ListCSS.js";
 
 function List() {
+    const [searchKey, setSearchKey] = useState("");
+    const [departFilter, setDepartFilter] = useState("");
+    const [majorFilter, setMajorFilter] = useState("");
+    const [gradeFilter, setGradeFilter] = useState("");
+    const [sort, setSort] = useState("최신순");
+
     const [list, setList] = useState([]);
+
+    const [skip, setSkip] = useState(0);
+    const [loadMore, setLoadMore] = useState(true);
+
+    const getPostList = () => {
+        setSkip(0);
+        const body = {
+            searchKey: searchKey,
+            departFilter: departFilter,
+            majorFilter: majorFilter,
+            gradeFilter: gradeFilter,
+            sort: sort,
+            skip: 0,
+        };
+        axios
+            .post("/api/post/list", body)
+            .then((res) => {
+                if (res.data.success) {
+                    setList([...res.data.list]);
+                    setSkip(res.data.list.length);
+                    if (res.data.list.length < 10) {
+                        setLoadMore(false);
+                    }
+                }
+            })
+            .catch((e) => {
+                return console.log(e);
+            });
+    };
+
+    const getPostListMore = () => {
+        const body = {
+            searchKey: searchKey,
+            departFilter: departFilter,
+            majorFilter: majorFilter,
+            gradeFilter: gradeFilter,
+            sort: sort,
+            skip: skip,
+        };
+        axios
+            .post("/api/post/list", body)
+            .then((res) => {
+                if (res.data.success) {
+                    setList([...list, ...res.data.list]);
+                    setSkip(skip + res.data.list.length);
+                    if (res.data.list.length < 10) {
+                        setLoadMore(false);
+                    }
+                }
+            })
+            .catch((e) => {
+                return console.log(e);
+            });
+    };
+
     useEffect(() => {
-        axios.post("/api/post/list").then((res) => {
-            if (res.data.success) {
-                setList([...res.data.list]);
-            }
-        });
-    }, []);
+        getPostList();
+    }, [departFilter, majorFilter, gradeFilter, sort]);
 
     return (
         <StyledList>
@@ -28,8 +85,22 @@ function List() {
                         </StyledLink>
                     );
                 })}
+                <button disabled={!loadMore} onClick={() => getPostListMore()}>
+                    더보기
+                </button>
             </ListContainer>
-            <ListController />
+            <ListController
+                searchKey={searchKey}
+                setSearchKey={setSearchKey}
+                departFilter={departFilter}
+                setDepartFilter={setDepartFilter}
+                majorFilter={majorFilter}
+                setMajorFilter={setMajorFilter}
+                gradeFilter={gradeFilter}
+                setGradeFilter={setGradeFilter}
+                sort={sort}
+                setSort={setSort}
+            />
         </StyledList>
     );
 }

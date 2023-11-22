@@ -17,6 +17,9 @@ export const signUp = async (req, res) => {
             grade,
             department,
             major,
+            posts: [],
+            seen: [],
+            likes: [],
         });
         await user.save();
         req.session.loggedIn = true;

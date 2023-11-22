@@ -7,7 +7,7 @@ function DropDown({ value, isOpen, setIsOpen, setValue }) {
     };
     return (
         <DropDownLi onClick={clickHandler}>
-            {value === 11 ? "상관 없음" : value === 10 ? "10명 이상" : value}
+            {value === 11 ? "무관" : value === 10 ? "10명 이상" : value}
         </DropDownLi>
     );
 }
