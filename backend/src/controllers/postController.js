@@ -63,8 +63,15 @@ export const deletePost = async (req, res) => {
 };
 
 export const getList = async (req, res) => {
-    const { searchKey, departFilter, majorFilter, gradeFilter, sort, skip } =
-        req.body;
+    const {
+        searchKey,
+        typeFilter,
+        departFilter,
+        majorFilter,
+        gradeFilter,
+        sort,
+        skip,
+    } = req.body;
     const sortKey = {};
     if (sort === "최신순") {
         sortKey.createdAt = -1;
@@ -127,6 +134,33 @@ export const getPostInfo = async (req, res) => {
             user.seen.push(_id);
             await user.save();
         }
+        let userLike = false;
+        if (user.likes.includes(_id)) {
+            userLike = true;
+        }
+        return res
+            .status(200)
+            .json({ success: true, post: post, userLike: userLike });
+    } else {
+        return res.status(200).json({ success: true, post: post });
     }
-    return res.status(200).json({ success: true, post: post });
+};
+
+export const postLike = async (req, res) => {
+    const { _id, uid } = req.body;
+    const post = await Post.findById(_id);
+    const user = await User.findById(uid);
+    let info = "";
+    if (user.likes.includes(_id)) {
+        user.likes.splice(user.likes.indexOf(_id), 1);
+        post.meta.likes--;
+        info = "minus";
+    } else {
+        user.likes.push(_id);
+        post.meta.likes++;
+        info = "plus";
+    }
+    await post.save();
+    await user.save();
+    return res.status(200).json({ success: true, info: info });
 };

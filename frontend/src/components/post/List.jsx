@@ -10,6 +10,7 @@ import { StyledList, ListContainer } from "../../style/post/ListCSS.js";
 
 function List() {
     const [searchKey, setSearchKey] = useState("");
+    const [typeFilter, setTypeFilter] = useState("");
     const [departFilter, setDepartFilter] = useState("");
     const [majorFilter, setMajorFilter] = useState("");
     const [gradeFilter, setGradeFilter] = useState("");
@@ -24,6 +25,7 @@ function List() {
         setSkip(0);
         const body = {
             searchKey: searchKey,
+            typeFilter: typeFilter,
             departFilter: departFilter,
             majorFilter: majorFilter,
             gradeFilter: gradeFilter,
@@ -49,6 +51,7 @@ function List() {
     const getPostListMore = () => {
         const body = {
             searchKey: searchKey,
+            typeFilter: typeFilter,
             departFilter: departFilter,
             majorFilter: majorFilter,
             gradeFilter: gradeFilter,
@@ -73,7 +76,7 @@ function List() {
 
     useEffect(() => {
         getPostList();
-    }, [departFilter, majorFilter, gradeFilter, sort]);
+    }, [typeFilter, departFilter, majorFilter, gradeFilter, sort]);
 
     return (
         <StyledList>
@@ -92,6 +95,8 @@ function List() {
             <ListController
                 searchKey={searchKey}
                 setSearchKey={setSearchKey}
+                typeFilter={typeFilter}
+                setTypeFilter={setTypeFilter}
                 departFilter={departFilter}
                 setDepartFilter={setDepartFilter}
                 majorFilter={majorFilter}

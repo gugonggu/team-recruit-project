@@ -8,6 +8,7 @@ import {
     getList,
     getPostInfo,
     deletePost,
+    postLike,
 } from "../controllers/postController.js";
 
 postRouter.post("/upload", upload);
@@ -16,5 +17,6 @@ postRouter.post("/delete", deletePost);
 
 postRouter.post("/list", getList);
 postRouter.post("/getpostinfo", getPostInfo);
+postRouter.post("/postlike", postLike);
 
 export default postRouter;

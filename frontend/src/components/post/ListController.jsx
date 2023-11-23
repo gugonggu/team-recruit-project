@@ -12,6 +12,8 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 function ListController({
     searchKey,
     setSearchKey,
+    typeFilter,
+    setTypeFilter,
     departFilter,
     setDepartFilter,
     majorFilter,
@@ -21,16 +23,19 @@ function ListController({
     sort,
     setSort,
 }) {
+    const typeRef = useRef();
     const departRef = useRef();
     const majorRef = useRef();
     const gradeRef = useRef();
     const sortRef = useRef();
 
+    const [typeIsOpen, setTypeIsOpen] = useDetectClose(typeRef, false);
     const [departIsOpen, setDepartIsOpen] = useDetectClose(departRef, false);
     const [majorIsOpen, setMajorIsOpen] = useDetectClose(majorRef, false);
     const [gradeIsOpen, setGradeIsOpen] = useDetectClose(gradeRef, false);
     const [sortIsOpen, setSortIsOpen] = useDetectClose(sortRef, false);
 
+    const typeList = ["", "스터디", "프로젝트", "연구"];
     const gradeList = ["", 1, 2, 3, 4, 11];
     const departList = [
         "",
@@ -139,6 +144,22 @@ function ListController({
                     onChange={(e) => setSearchKey(e.currentTarget.value)}
                 />
                 <FaMagnifyingGlass />
+            </div>
+            <div ref={typeRef}>
+                <label htmlFor="type">프로젝트 타입</label>
+                <input
+                    id="type"
+                    type="button"
+                    value={typeFilter ? typeFilter : "전체"}
+                    onClick={() => setTypeIsOpen(!typeIsOpen)}
+                />
+                {typeIsOpen && (
+                    <ControllerDropDownUl>
+                        {typeList.map((v, i) => (
+                            <ControllerDropdown />
+                        ))}
+                    </ControllerDropDownUl>
+                )}
             </div>
             <div ref={departRef}>
                 <label htmlFor="depart">학부</label>
