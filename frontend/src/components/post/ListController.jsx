@@ -156,7 +156,13 @@ function ListController({
                 {typeIsOpen && (
                     <ControllerDropDownUl>
                         {typeList.map((v, i) => (
-                            <ControllerDropdown />
+                            <ControllerDropdown
+                                key={i}
+                                value={v}
+                                isOpen={typeIsOpen}
+                                setIsOpen={setTypeIsOpen}
+                                setValue={setTypeFilter}
+                            />
                         ))}
                     </ControllerDropDownUl>
                 )}

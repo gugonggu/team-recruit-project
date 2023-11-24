@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Spinner.jsx";
+import Comment from "./Comment.jsx";
 import { PostContainer } from "../../style/post/PostCSS.js";
+import { CommentContainer, NoComments } from "../../style/post/CommentCSS.js";
 import { useSelector } from "react-redux";
 import parse from "html-react-parser";
 import { FaRegEye, FaStar, FaRegStar } from "react-icons/fa6";
@@ -18,6 +20,7 @@ function Post() {
     const [postLikes, setPostLikes] = useState(0);
     const [userLike, setUserLike] = useState(false);
     const [loadingFlag, setLoadingFlag] = useState(false);
+    const [comment, setComment] = useState("");
 
     const setTime = (c) => {
         return moment(c).format("YYYY년 MMMM Do");
@@ -61,6 +64,23 @@ function Post() {
                     } else {
                         setPostLikes(postLikes - 1);
                     }
+                }
+            })
+            .catch((e) => console.log(e));
+    };
+
+    const handleAddComment = (e) => {
+        e.preventDefault();
+        const body = {
+            _id: params.id,
+            uid: user._id,
+            content: comment,
+        };
+        axios
+            .post("/api/post/addcomment", body)
+            .then((res) => {
+                if (res.data.success) {
+                    window.location.reload();
                 }
             })
             .catch((e) => console.log(e));
@@ -132,6 +152,7 @@ function Post() {
                         ) : null}
                     </div>
                     <div className="postInformation">
+                        <h2>모집 기본 정보</h2>
                         <div className="postInfoRow">
                             <div className="postInfoEach">
                                 <h4>프로젝트 타입</h4>
@@ -164,7 +185,58 @@ function Post() {
                         </div>
                     </div>
                     <div className="postContent">
+                        <h2>모집 설명</h2>
                         {postInfo.content ? parse(postInfo.content) : null}
+                    </div>
+                    <div className="postComments">
+                        <h4>댓글 {postInfo.comments.length}개</h4>
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="추가할 댓글을 입력해주세요 :)"
+                                value={comment}
+                                onChange={(e) =>
+                                    setComment(e.currentTarget.value)
+                                }
+                            />
+                            <button
+                                className="commentButton"
+                                onClick={(e) => handleAddComment(e)}
+                            >
+                                댓글 등록
+                            </button>
+                        </div>
+                        <CommentContainer>
+                            {postInfo.comments.length !== 0 ? (
+                                postInfo.comments.map((v, i) => {
+                                    return (
+                                        <Comment
+                                            key={i}
+                                            commentId={v._id}
+                                            uid={v.author._id}
+                                            curUId={user._id}
+                                            uName={v.author.name}
+                                            content={v.content}
+                                            createdAt={v.createdAt}
+                                        >
+                                            {v.content}
+                                        </Comment>
+                                    );
+                                })
+                            ) : (
+                                <NoComments>
+                                    아직 댓글이 없습니다.
+                                    <br />첫 댓글을 남겨보세요!
+                                </NoComments>
+                            )}
+                        </CommentContainer>
+                    </div>
+                    <div className="postManage">
+                        {postInfo.author._id === user._id ? (
+                            <h2>모집 관리</h2>
+                        ) : (
+                            <h2>모집 신청</h2>
+                        )}
                         <div className="buttonContainer">
                             {postInfo &&
                             postInfo.author &&

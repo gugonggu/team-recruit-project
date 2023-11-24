@@ -1,5 +1,6 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
+import Comment from "../models/Comment.js";
 
 export const upload = async (req, res) => {
     const { type, num, grade, depart, major, end, title, content, userId } =
@@ -78,40 +79,36 @@ export const getList = async (req, res) => {
     } else if (sort === "조회순") {
         sortKey.views = -1;
     } else {
-        sortKey.starts = -1;
+        sortKey.stars = -1;
     }
     const findObj = { $or: [], $and: [] };
-    if (!searchKey && !departFilter && !majorFilter && !gradeFilter) {
-        findObj.$or.push({});
-        findObj.$and.push({});
-    }
     if (searchKey) {
-        findObj.$and.push({});
         findObj.$or.push(
             { title: { $regex: searchKey } },
             { content: { $regex: searchKey } }
         );
     }
-    if (departFilter && !majorFilter && !gradeFilter) {
-        findObj.$or.push({});
+
+    if (typeFilter) {
+        findObj.$and.push({ projectType: typeFilter });
+    }
+    if (departFilter) {
         findObj.$and.push({ department: departFilter });
-    } else if (departFilter && majorFilter && !gradeFilter) {
-        findObj.$or.push({});
-        findObj.$and.push({ department: departFilter }, { major: majorFilter });
-    } else if (departFilter && majorFilter && gradeFilter) {
-        findObj.$or.push({});
-        findObj.$and.push(
-            { department: departFilter },
-            { major: majorFilter },
-            { grade: gradeFilter }
-        );
-    } else if (departFilter && !majorFilter && gradeFilter) {
-        findObj.$or.push({});
-        findObj.$and.push({ department: departFilter }, { grade: gradeFilter });
-    } else if (!departFilter && !majorFilter && gradeFilter) {
-        findObj.$or.push({});
+    }
+    if (majorFilter) {
+        findObj.$and.push({ major: majorFilter });
+    }
+    if (gradeFilter) {
         findObj.$and.push({ grade: gradeFilter });
     }
+
+    if (findObj.$or.length === 0) {
+        findObj.$or.push({});
+    }
+    if (findObj.$and.length === 0) {
+        findObj.$and.push({});
+    }
+
     try {
         const list = await Post.find(findObj).sort(sort).skip(skip).limit(10);
         return res.status(200).json({ success: true, list: list });
@@ -122,7 +119,15 @@ export const getList = async (req, res) => {
 
 export const getPostInfo = async (req, res) => {
     const { _id, uid } = req.body;
-    const post = await Post.findById(_id).populate("author");
+    const post = await Post.findById(_id)
+        .populate("author")
+        .populate("comments")
+        .populate({
+            path: "comments",
+            populate: {
+                path: "author",
+            },
+        });
     if (!post) {
         return res.status(200).json({ success: false });
     }
@@ -163,4 +168,23 @@ export const postLike = async (req, res) => {
     await post.save();
     await user.save();
     return res.status(200).json({ success: true, info: info });
+};
+
+export const addComment = async (req, res) => {
+    const { _id, uid, content } = req.body;
+    try {
+        const post = await Post.findById(_id);
+        const comment = new Comment({
+            author: uid,
+            content: content,
+            nestedComments: [],
+        });
+        await comment.save();
+        post.comments.push(comment._id);
+        await post.save();
+    } catch (e) {
+        console.log(e);
+        return res.status(304).json({ success: false });
+    }
+    return res.status(200).json({ success: true });
 };
