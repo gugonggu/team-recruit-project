@@ -157,7 +157,7 @@ function SignUp() {
                     dispatch(loginUser({ _id, name, email }));
                     navigate("/");
                 } else {
-                    return setAlertMsg(res.data.errorMsg);
+                    return setAlertMsg(res.data.errorMsg.message);
                 }
             })
             .catch((e) => {

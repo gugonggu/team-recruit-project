@@ -127,6 +127,15 @@ export const getPostInfo = async (req, res) => {
             populate: {
                 path: "author",
             },
+        })
+        .populate({
+            path: "comments",
+            populate: {
+                path: "nestedComments",
+                populate: {
+                    path: "author",
+                },
+            },
         });
     if (!post) {
         return res.status(200).json({ success: false });
@@ -187,4 +196,98 @@ export const addComment = async (req, res) => {
         return res.status(304).json({ success: false });
     }
     return res.status(200).json({ success: true });
+};
+
+export const editComment = async (req, res) => {
+    const { cId, content } = req.body;
+    try {
+        await Comment.findByIdAndUpdate(cId, {
+            content: content,
+        });
+        return res.status(200).json({ success: true });
+    } catch (e) {
+        console.log(e);
+        return res.status(304).json({ success: false });
+    }
+};
+
+export const deleteComment = async (req, res) => {
+    const { cId, pId } = req.body;
+    try {
+        const post = await Post.findById(pId);
+        post.comments.splice(post.comments.indexOf(cId), 1);
+        await post.save();
+        const comment = await Comment.findById(cId);
+        if (comment.nestedComments.length !== 0) {
+            for (let i = 0; i < comment.nestedComments.length; i++) {
+                await Comment.findByIdAndDelete(comment.nestedComments[i]._id);
+            }
+        }
+        await Comment.findByIdAndDelete(cId);
+        return res.status(200).json({ success: true });
+    } catch (e) {
+        console.log(e);
+        return res.status(304).json({ success: false });
+    }
+};
+
+export const addNestedComment = async (req, res) => {
+    const { cId, uid, content } = req.body;
+    try {
+        const comment = await Comment.findById(cId);
+        const nestedComment = new Comment({
+            author: uid,
+            content: content,
+        });
+        await nestedComment.save();
+        comment.nestedComments.push(nestedComment._id);
+        await comment.save();
+        return res.status(200).json({ success: true });
+    } catch (e) {
+        console.log(e);
+        return res.status(304).json({ success: false });
+    }
+};
+
+export const editNestedComment = async (req, res) => {
+    const { cid, content } = req.body;
+    try {
+        await Comment.findByIdAndUpdate(cid, {
+            content: content,
+        });
+        return res.status(200).json({ success: true });
+    } catch (e) {
+        console.log(e);
+        return res.status(304).json({ success: false });
+    }
+};
+
+export const deleteNestedCommnet = async (req, res) => {
+    const { cid, parentCId } = req.body;
+    try {
+        const parentComment = await Comment.findById(parentCId);
+        parentComment.nestedComments.splice(
+            parentComment.nestedComments.indexOf(cid),
+            1
+        );
+        await parentComment.save();
+        await Comment.findByIdAndDelete(cid);
+        return res.status(200).json({ success: true });
+    } catch (e) {
+        console.log(e);
+        return res.status(304).jsno({ success: false });
+    }
+};
+
+export const application = async (req, res) => {
+    const { pid, uid, word } = req.body;
+    try {
+        const post = await Post.findById(pid);
+        post.applicants.push({ word: word, applicant: uid });
+        await post.save();
+        return res.status(200).json({ success: true });
+    } catch (e) {
+        console.log(e);
+        return res.status(304).json({ success: false });
+    }
 };

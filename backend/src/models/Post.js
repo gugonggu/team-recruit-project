@@ -24,9 +24,12 @@ const postSchema = new mongoose.Schema(
         ],
         applicants: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User",
-                required: true,
+                word: { type: String, required: true, trim: true },
+                applicant: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "User",
+                    required: true,
+                },
             },
         ],
         meta: {

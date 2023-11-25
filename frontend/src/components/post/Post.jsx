@@ -3,7 +3,11 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Spinner.jsx";
 import Comment from "./Comment.jsx";
-import { PostContainer } from "../../style/post/PostCSS.js";
+import {
+    PostContainer,
+    ApplicationContainer,
+    ManageContainer,
+} from "../../style/post/PostCSS.js";
 import { CommentContainer, NoComments } from "../../style/post/CommentCSS.js";
 import { useSelector } from "react-redux";
 import parse from "html-react-parser";
@@ -21,6 +25,8 @@ function Post() {
     const [userLike, setUserLike] = useState(false);
     const [loadingFlag, setLoadingFlag] = useState(false);
     const [comment, setComment] = useState("");
+    const [commentCount, setCommentCount] = useState(0);
+    const [word, setWord] = useState("");
 
     const setTime = (c) => {
         return moment(c).format("YYYY년 MMMM Do");
@@ -39,6 +45,11 @@ function Post() {
                 if (res.data.userLike) {
                     setUserLike(res.data.userLike);
                 }
+                let count = res.data.post.comments.length;
+                for (let i = 0; i < res.data.post.comments.length; i++) {
+                    count += res.data.post.comments[i].nestedComments.length;
+                }
+                setCommentCount(count);
             } else {
                 navigate("/404");
             }
@@ -71,6 +82,9 @@ function Post() {
 
     const handleAddComment = (e) => {
         e.preventDefault();
+        if (!user._id) {
+            return navigate("/login");
+        }
         const body = {
             _id: params.id,
             uid: user._id,
@@ -105,6 +119,26 @@ function Post() {
                 })
                 .catch((e) => alert("게시글 삭제에 실패했습니다."));
         }
+    };
+
+    const handleApplication = (e) => {
+        e.preventDefault();
+        if (!user._id) {
+            return navigate("/login");
+        }
+        const body = {
+            pid: params.id,
+            uid: user._id,
+            word: word,
+        };
+        axios
+            .post("/api/post/application", body)
+            .then((res) => {
+                if (res.data.success) {
+                    window.location.reload();
+                }
+            })
+            .catch((e) => console.log(e));
     };
 
     return (
@@ -160,7 +194,11 @@ function Post() {
                             </div>
                             <div className="postInfoEach">
                                 <h4>모집 인원</h4>
-                                <p>{postInfo.numOfRecruit}</p>
+                                <p>
+                                    {postInfo.numOfRecruit === 10
+                                        ? "10명 이상"
+                                        : postInfo.numOfRecruit}
+                                </p>
                             </div>
                         </div>
                         <div className="postInfoRow">
@@ -176,7 +214,11 @@ function Post() {
                         <div className="postInfoRow">
                             <div className="postInfoEach">
                                 <h4>학년</h4>
-                                <p>{postInfo.grade}</p>
+                                <p>
+                                    {postInfo.grade === 11
+                                        ? "무관"
+                                        : postInfo.grade}
+                                </p>
                             </div>
                             <div className="postInfoEach">
                                 <h4>모집 마감 날짜</h4>
@@ -189,7 +231,7 @@ function Post() {
                         {postInfo.content ? parse(postInfo.content) : null}
                     </div>
                     <div className="postComments">
-                        <h4>댓글 {postInfo.comments.length}개</h4>
+                        <h3>댓글 {commentCount}개</h3>
                         <div>
                             <input
                                 type="text"
@@ -212,12 +254,14 @@ function Post() {
                                     return (
                                         <Comment
                                             key={i}
+                                            postId={postInfo._id}
                                             commentId={v._id}
                                             uid={v.author._id}
                                             curUId={user._id}
                                             uName={v.author.name}
                                             content={v.content}
                                             createdAt={v.createdAt}
+                                            nestedComments={v.nestedComments}
                                         >
                                             {v.content}
                                         </Comment>
@@ -233,9 +277,32 @@ function Post() {
                     </div>
                     <div className="postManage">
                         {postInfo.author._id === user._id ? (
-                            <h2>모집 관리</h2>
+                            <ManageContainer>
+                                <h2>모집 관리</h2>
+                            </ManageContainer>
                         ) : (
-                            <h2>모집 신청</h2>
+                            <ApplicationContainer>
+                                <h2>모집 신청</h2>
+                                <label htmlFor="word">
+                                    팀장에게 남길 한마디
+                                </label>
+                                <div>
+                                    <input
+                                        type="text"
+                                        id="word"
+                                        placeholder="팀장에게 남길 한마디를 작성해주세요"
+                                        value={word}
+                                        onChange={(e) =>
+                                            setWord(e.currentTarget.value)
+                                        }
+                                    />
+                                    <button
+                                        onClick={(e) => handleApplication(e)}
+                                    >
+                                        신청
+                                    </button>
+                                </div>
+                            </ApplicationContainer>
                         )}
                         <div className="buttonContainer">
                             {postInfo &&
@@ -249,7 +316,11 @@ function Post() {
                                         삭제
                                     </button>
                                 </>
-                            ) : null}
+                            ) : (
+                                <button onClick={(e) => handleLike(e)}>
+                                    모집글 즐겨찾기
+                                </button>
+                            )}
                         </div>
                     </div>
                 </>

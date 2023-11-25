@@ -247,9 +247,9 @@ function Upload() {
                             )}
                         </div>
                         <div className="each_input" ref={numRef}>
-                            <label htmlFor="type">모집인원</label>
+                            <label htmlFor="num">모집인원</label>
                             <input
-                                id="type"
+                                id="num"
                                 type="button"
                                 value={
                                     num

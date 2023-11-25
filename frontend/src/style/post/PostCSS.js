@@ -61,11 +61,13 @@ export const PostContainer = styled.div`
         &.postContent {
         }
         &.postManage {
+            padding-bottom: 20px;
             .buttonContainer {
                 width: 100%;
                 display: flex;
                 align-items: center;
                 justify-content: flex-end;
+                margin-top: 40px;
                 a,
                 button {
                     background-color: transparent;
@@ -84,6 +86,9 @@ export const PostContainer = styled.div`
                     margin-left: 10px;
                     background-color: #e11837;
                     color: white;
+                    &:hover {
+                        opacity: 0.8;
+                    }
                 }
             }
         }
@@ -112,8 +117,50 @@ export const PostContainer = styled.div`
                     border-radius: 20px;
                     font-size: 16px;
                     cursor: pointer;
+                    &:hover {
+                        opacity: 0.8;
+                    }
                 }
             }
         }
     }
 `;
+
+export const ApplicationContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    label {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    div {
+        width: 100%;
+        display: flex;
+        input {
+            width: 90%;
+            outline: none;
+            border: none;
+            border-bottom: 1px solid lightgray;
+            padding: 10px;
+            &:focus {
+                border-bottom: 1px solid #e11837;
+            }
+        }
+        button {
+            cursor: pointer;
+            margin-left: 20px;
+            background-color: #e11837;
+            color: white;
+            padding: 5px 10px;
+            width: 10%;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+    }
+`;
+
+export const ManageContainer = styled.div``;
