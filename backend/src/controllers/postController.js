@@ -3,8 +3,18 @@ import User from "../models/User.js";
 import Comment from "../models/Comment.js";
 
 export const upload = async (req, res) => {
-    const { type, num, grade, depart, major, end, title, content, userId } =
-        req.body;
+    const {
+        type,
+        num,
+        grade,
+        depart,
+        major,
+        end,
+        title,
+        content,
+        link,
+        userId,
+    } = req.body;
     try {
         const post = new Post({
             projectType: type,
@@ -16,8 +26,10 @@ export const upload = async (req, res) => {
             title: title,
             content: content,
             author: userId,
+            link: link,
             comments: [],
             applicants: [],
+            members: [userId],
             meta: {
                 views: 0,
                 likes: 0,
@@ -36,9 +48,20 @@ export const upload = async (req, res) => {
 };
 
 export const edit = async (req, res) => {
-    const { title, content, _id } = req.body;
+    const { type, num, grade, depart, major, end, title, content, link, _id } =
+        req.body;
     try {
-        await Post.findByIdAndUpdate(_id, { title: title, content: content });
+        await Post.findByIdAndUpdate(_id, {
+            projectType: type,
+            numOfRecruit: num,
+            grade: grade,
+            department: depart,
+            major: major,
+            end: end,
+            title: title,
+            content: content,
+            link: link,
+        });
         return res.status(200).json({ success: true });
     } catch (e) {
         console.log(e);
@@ -47,14 +70,32 @@ export const edit = async (req, res) => {
 };
 
 export const deletePost = async (req, res) => {
-    const { _id, userId } = req.body;
+    const { _id } = req.body;
     try {
-        const user = await User.findById(userId);
-        const filteredUserPosts = user.posts.filter(
-            (v) => String(v) !== String(_id)
-        );
-        user.posts = filteredUserPosts;
-        await user.save();
+        const allUser = await User.find();
+        for (let i = 0; i < allUser.length; i++) {
+            let index = allUser[i].posts.indexOf(_id);
+            if (index !== -1) {
+                allUser[i].posts.splice(index, 1);
+            }
+            index = allUser[i].seen.indexOf(_id);
+            if (index !== -1) {
+                allUser[i].seen.splice(index, 1);
+            }
+            index = allUser[i].likes.indexOf(_id);
+            if (index !== -1) {
+                allUser[i].likes.splice(index, 1);
+            }
+            index = allUser[i].registered.indexOf(_id);
+            if (index !== -1) {
+                allUser[i].registered.splice(index, 1);
+            }
+            index = allUser[i].belong.indexOf(_id);
+            if (index !== -1) {
+                allUser[i].belong.splice(index, 1);
+            }
+            await allUser[i].save();
+        }
         await Post.findByIdAndDelete(_id);
         return res.status(200).json({ success: true });
     } catch (e) {
@@ -136,7 +177,8 @@ export const getPostInfo = async (req, res) => {
                     path: "author",
                 },
             },
-        });
+        })
+        .populate("applicants.applicant");
     if (!post) {
         return res.status(200).json({ success: false });
     }
@@ -284,7 +326,62 @@ export const application = async (req, res) => {
     try {
         const post = await Post.findById(pid);
         post.applicants.push({ word: word, applicant: uid });
+        const user = await User.findById(uid);
+        user.registered.push(pid);
         await post.save();
+        await user.save();
+        return res.status(200).json({ success: true });
+    } catch (e) {
+        console.log(e);
+        return res.status(304).json({ success: false });
+    }
+};
+
+export const acceptApplication = async (req, res) => {
+    const { applicationId, pid } = req.body;
+    try {
+        const post = await Post.findById(pid);
+        let index;
+        for (let i = 0; i < post.applicants.length; i++) {
+            if (
+                String(post.applicants[i].applicant) === String(applicationId)
+            ) {
+                index = i;
+                break;
+            }
+        }
+        post.applicants.splice(index, 1);
+        post.members.push(applicationId);
+        const user = await User.findById(applicationId);
+        user.registered.splice(user.registered.indexOf(pid), 1);
+        user.belong.push(pid);
+        await user.save();
+        await post.save();
+        return res.status(200).json({ success: true });
+    } catch (e) {
+        console.log(e);
+        return res.status(304).json({ success: false });
+    }
+};
+
+export const refuseApplication = async (req, res) => {
+    const { applicationId, pid } = req.body;
+    try {
+        const post = await Post.findById(pid);
+        let index;
+        for (let i = 0; i < post.applicants.length; i++) {
+            if (
+                String(post.applicants[i].applicant) === String(applicationId)
+            ) {
+                index = i;
+                break;
+            }
+        }
+        post.applicants.splice(index, 1);
+        const user = await User.findById(applicationId);
+        user.registered.splice(user.registered.indexOf(pid), 1);
+        await post.save();
+        await user.save();
         return res.status(200).json({ success: true });
     } catch (e) {
         console.log(e);

@@ -15,6 +15,7 @@ const postSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
+        link: { type: String, trim: true, required: true },
         comments: [
             {
                 type: mongoose.Schema.Types.ObjectId,
@@ -32,11 +33,17 @@ const postSchema = new mongoose.Schema(
                 },
             },
         ],
+        members: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+            },
+        ],
         meta: {
             views: { type: Number, required: true, default: 0 },
             likes: { type: Number, required: true, default: 0 },
         },
-        recruiting: { type: Boolean, required: true },
+        recruiting: { type: Boolean, required: true, default: true },
     },
     { timestamps: true }
 );

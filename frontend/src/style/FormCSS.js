@@ -186,6 +186,25 @@ export const PostForm = styled.form`
         &:last-of-type {
             margin-top: 100px;
         }
+
+        .linkContainer {
+            display: flex;
+            flex-direction: column;
+            label {
+                font-size: 18px;
+            }
+            input {
+                margin-top: 20px;
+                background-color: transparent;
+                outline: none;
+                border: none;
+                padding: 10px;
+                border-bottom: 1px solid lightgray;
+                &:focus {
+                    border-bottom: 1px solid #e11837;
+                }
+            }
+        }
     }
 
     button {

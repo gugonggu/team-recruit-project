@@ -25,6 +25,7 @@ function Upload() {
     const [end, setEnd] = useState("");
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const [chatLink, setChatLink] = useState("");
 
     const [alertMsg, setAlertMsg] = useState("");
 
@@ -146,7 +147,8 @@ function Upload() {
                 major &&
                 end &&
                 title &&
-                content
+                content &&
+                chatLink
             )
         ) {
             window.scrollTo({ top: 0, behavior: "smooth" });
@@ -161,6 +163,7 @@ function Upload() {
             end: end,
             title: title,
             content: content,
+            link: chatLink,
             userId: user._id,
         };
         axios
@@ -379,6 +382,19 @@ function Upload() {
                         ></input>
                     </div>
                     <Editor content={content} setContent={setContent} />
+                </section>
+                <section>
+                    <h1>카카오톡 오픈채팅 링크를 올려주세요</h1>
+                    <div className="linkContainer">
+                        <label htmlFor="link">채팅 링크</label>
+                        <input
+                            type="url"
+                            id="link"
+                            placeholder="카카오톡 오픈채팅 링크"
+                            value={chatLink}
+                            onChange={(e) => setChatLink(e.currentTarget.value)}
+                        />
+                    </div>
                 </section>
                 <button onClick={(e) => handleSubmit(e)}>제출</button>
             </PostForm>

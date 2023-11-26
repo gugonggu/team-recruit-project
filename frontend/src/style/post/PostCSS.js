@@ -163,4 +163,46 @@ export const ApplicationContainer = styled.div`
     }
 `;
 
-export const ManageContainer = styled.div``;
+export const ManageContainer = styled.div`
+    div {
+        .application {
+            margin-top: 20px !important;
+        }
+        div {
+            display: flex;
+            justify-content: space-between;
+            .applyButtonContainer {
+                margin-right: 20px;
+                button {
+                    cursor: pointer;
+                    background-color: white;
+                    border: none;
+                    font-size: 16px;
+                    padding: 5px 10px;
+                    border-radius: 20px;
+                    &:first-of-type {
+                        &:hover {
+                            background-color: lightgray;
+                        }
+                    }
+                    &:last-of-type {
+                        margin-left: 20px;
+                        background-color: #e11837;
+                        color: white;
+                        &:hover {
+                            opacity: 0.8;
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
+
+export const MemberContainer = styled.div`
+    img {
+        width: 100px;
+        height: 100px;
+        cursor: pointer;
+    }
+`;

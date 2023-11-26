@@ -16,6 +16,8 @@ import {
     editNestedComment,
     deleteNestedCommnet,
     application,
+    acceptApplication,
+    refuseApplication,
 } from "../controllers/postController.js";
 
 postRouter.post("/upload", upload);
@@ -35,5 +37,7 @@ postRouter.post("/addnestedcomment", addNestedComment);
 postRouter.post("/editnestedcomment", editNestedComment);
 postRouter.post("/deletenestedcomment", deleteNestedCommnet);
 postRouter.post("/application", application);
+postRouter.post("/acceptapplication", acceptApplication);
+postRouter.post("/refuseapplication", refuseApplication);
 
 export default postRouter;

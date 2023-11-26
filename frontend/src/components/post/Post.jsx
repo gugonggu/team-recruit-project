@@ -7,11 +7,14 @@ import {
     PostContainer,
     ApplicationContainer,
     ManageContainer,
+    MemberContainer,
 } from "../../style/post/PostCSS.js";
 import { CommentContainer, NoComments } from "../../style/post/CommentCSS.js";
 import { useSelector } from "react-redux";
 import parse from "html-react-parser";
 import { FaRegEye, FaStar, FaRegStar } from "react-icons/fa6";
+
+import kakaoSvg from "../../img/kakao.svg";
 
 import moment from "moment";
 import "moment/locale/ko";
@@ -105,7 +108,6 @@ function Post() {
         if (window.confirm("정말로 삭제하시겠습니까?")) {
             const body = {
                 _id: params.id,
-                userId: user._id,
             };
             axios
                 .post("/api/post/delete", body)
@@ -141,14 +143,50 @@ function Post() {
             .catch((e) => console.log(e));
     };
 
+    const handleAccept = (e, applicationId) => {
+        e.preventDefault();
+        if (window.confirm("정말로 수락하시겠습니까?")) {
+            const body = {
+                applicationId: applicationId,
+                pid: postInfo._id,
+            };
+            axios
+                .post("/api/post/acceptapplication", body)
+                .then((res) => {
+                    if (res.data.success) {
+                        window.location.reload();
+                    }
+                })
+                .catch((e) => console.log(e));
+        }
+    };
+
+    const handleRefuse = (e, applicationId) => {
+        e.preventDefault();
+        if (window.confirm("정말로 거절하시겠습니까?")) {
+            const body = {
+                applicationId: applicationId,
+                pid: postInfo._id,
+            };
+            axios
+                .post("/api/post/refuseapplication", body)
+                .then((res) => {
+                    if (res.data.success) {
+                        window.location.relaod();
+                    }
+                })
+                .catch((e) => console.log(e));
+        }
+    };
+
     return (
         <PostContainer>
             {loadingFlag ? (
                 <>
                     <div className="title">
                         <h1>{postInfo.title}</h1>
+                        <span>작성자 : </span>
                         <Link to={`/user/${postInfo.author._id}`}>
-                            작성자 :{" "}
                             {postInfo
                                 ? postInfo.author && postInfo.author.name
                                 : "로딩중"}
@@ -279,7 +317,89 @@ function Post() {
                         {postInfo.author._id === user._id ? (
                             <ManageContainer>
                                 <h2>모집 관리</h2>
+                                {postInfo.applicants.length === 0 ? (
+                                    <p>아직 아무도 신청하지 않았습니다</p>
+                                ) : (
+                                    <>
+                                        {postInfo.applicants.map((v, i) => {
+                                            return (
+                                                <div key={i}>
+                                                    <div className="application">
+                                                        <div>
+                                                            <Link
+                                                                to={`/user/${v.applicant._id}`}
+                                                            >
+                                                                {
+                                                                    v.applicant
+                                                                        .name
+                                                                }
+                                                            </Link>
+                                                            <span>
+                                                                님이
+                                                                신청하셨습니다.
+                                                            </span>
+                                                        </div>
+                                                        <div className="applyButtonContainer">
+                                                            <button
+                                                                onClick={(e) =>
+                                                                    handleAccept(
+                                                                        e,
+                                                                        v
+                                                                            .applicant
+                                                                            ._id
+                                                                    )
+                                                                }
+                                                            >
+                                                                수락
+                                                            </button>
+                                                            <button
+                                                                onClick={(e) =>
+                                                                    handleRefuse(
+                                                                        e,
+                                                                        v
+                                                                            .applicant
+                                                                            ._id
+                                                                    )
+                                                                }
+                                                            >
+                                                                거절
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <p>
+                                                        {v.applicant.name}님의
+                                                        한마디 : {v.word}
+                                                    </p>
+                                                    <hr />
+                                                </div>
+                                            );
+                                        })}
+                                    </>
+                                )}
                             </ManageContainer>
+                        ) : postInfo.applicants.some(
+                              (v) => v.applicant._id === user._id
+                          ) ? (
+                            <>
+                                <h2>모집 참여 수락 대기중</h2>
+                                <p>
+                                    현재 팀장님의 응답을 기다리고 있습니다.
+                                    조금만 기다려주세요!
+                                </p>
+                            </>
+                        ) : postInfo.members.includes(user._id) ? (
+                            <MemberContainer>
+                                <h2>오픈채팅 링크</h2>
+                                <p>
+                                    아래 이미지 클릭시 카카오톡 오픈채팅 링크로
+                                    연결됩니다.
+                                </p>
+                                <img
+                                    src={kakaoSvg}
+                                    alt="open chatting link"
+                                    onClick={() => window.open(postInfo.link)}
+                                ></img>
+                            </MemberContainer>
                         ) : (
                             <ApplicationContainer>
                                 <h2>모집 신청</h2>

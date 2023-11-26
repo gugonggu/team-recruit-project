@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema({
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     seen: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
+    registered: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
+    belong: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
 });
 
 userSchema.pre("save", async function () {
