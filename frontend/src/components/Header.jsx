@@ -27,8 +27,11 @@ function Header() {
     const dropdownRef = useRef();
     const [isOpen, setIsOpen] = useDetectClose(dropdownRef, false);
     const dropdownList = [
-        { link: "/mypage", name: "마이페이지" },
-        { link: ".setting", name: "설정" },
+        { link: `/user/${user._id}`, name: "마이페이지" },
+        { link: "/", name: "내 작성글" },
+        { link: "/", name: "내가 봤던 글" },
+        { link: "/", name: "내 관심글" },
+        { link: "/", name: "내 그룹" },
     ];
 
     const logoutHandler = () => {

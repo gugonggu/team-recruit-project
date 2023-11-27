@@ -376,6 +376,24 @@ function Post() {
                                         })}
                                     </>
                                 )}
+                                {postInfo.members ? (
+                                    <>
+                                        <h3>현재 소속 멤버</h3>
+                                        <ul>
+                                            {postInfo.members.map((v, i) => {
+                                                return (
+                                                    <li key={i}>
+                                                        <Link
+                                                            to={`/user/${v._id}`}
+                                                        >
+                                                            {v.name}
+                                                        </Link>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </>
+                                ) : null}
                             </ManageContainer>
                         ) : postInfo.applicants.some(
                               (v) => v.applicant._id === user._id

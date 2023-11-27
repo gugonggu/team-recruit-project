@@ -178,7 +178,8 @@ export const getPostInfo = async (req, res) => {
                 },
             },
         })
-        .populate("applicants.applicant");
+        .populate("applicants.applicant")
+        .populate("members");
     if (!post) {
         return res.status(200).json({ success: false });
     }
