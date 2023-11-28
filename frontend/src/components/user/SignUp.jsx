@@ -133,13 +133,6 @@ function SignUp() {
             setConfirmPw("");
             return setAlertMsg("비밀번호가 같지 않습니다");
         }
-        if (isNaN(Number(grade)) === true) {
-            setGrade("");
-            return setAlertMsg("학년값은 숫자로 입력해주세요");
-        }
-        if (major === "소속 학부를 먼저 선택해주세요") {
-            return setAlertMsg("전공이 선택되지 않았습니다");
-        }
 
         const body = {
             name: name,
@@ -253,7 +246,7 @@ function SignUp() {
                             type="button"
                             value={depart ? depart : "소속 학부를 선택해주세요"}
                             onClick={() => {
-                                setMajor("소속 학부를 먼저 선택해주세요");
+                                setMajor("");
                                 setDepartIsOpen(!departIsOpen);
                             }}
                         ></input>
