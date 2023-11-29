@@ -28,10 +28,10 @@ function Header() {
     const [isOpen, setIsOpen] = useDetectClose(dropdownRef, false);
     const dropdownList = [
         { link: `/user/${user._id}`, name: "마이페이지" },
-        { link: "/", name: "내 작성글" },
-        { link: "/", name: "내가 봤던 글" },
-        { link: "/", name: "내 관심글" },
-        { link: "/", name: "내 그룹" },
+        { link: `/user/${user._id}/about?post=true`, name: "내 작성글" },
+        { link: `/user/${user._id}/about?seen=true`, name: "내가 봤던 글" },
+        { link: `/user/${user._id}/about?like=true`, name: "내 관심글" },
+        { link: `/user/${user._id}/about?belong=true`, name: "내 그룹" },
     ];
 
     const logoutHandler = () => {

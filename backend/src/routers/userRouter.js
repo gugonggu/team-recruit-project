@@ -5,6 +5,8 @@ import {
     logIn,
     logOut,
     getUserInfo,
+    edit,
+    getAbout,
 } from "../controllers/userController.js";
 
 const userRouter = express.Router();
@@ -14,5 +16,8 @@ userRouter.post("/login", logIn);
 userRouter.post("/logout", logOut);
 
 userRouter.post("/getuserinfo", getUserInfo);
+userRouter.post("/edit", edit);
+
+userRouter.post("/getabout", getAbout);
 
 export default userRouter;

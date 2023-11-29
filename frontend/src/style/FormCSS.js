@@ -87,6 +87,22 @@ export const DefaultForm = styled.form`
         }
     }
 
+    .quill {
+        margin-top: 10px;
+        .ql-toolbar {
+            .ql-formats {
+                button {
+                    margin-top: 0px;
+                }
+            }
+        }
+        .ql-container {
+            .ql-editor {
+                min-height: 300px;
+            }
+        }
+    }
+
     button {
         background-color: #e11837;
         color: white;
@@ -98,6 +114,9 @@ export const DefaultForm = styled.form`
         border-radius: 20px;
         font-size: 18px;
         cursor: pointer;
+        &.editUser {
+            margin-top: 90px !important;
+        }
     }
 `;
 

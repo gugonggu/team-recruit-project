@@ -26,7 +26,7 @@ function MyPage() {
     return (
         <MyPageContainer>
             <section>
-                <h2>사용자 정보</h2>
+                <h2>회원 정보</h2>
                 <div className="userInfo">
                     <div>
                         <p>이름 : {dbUser.name}</p>

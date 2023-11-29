@@ -39,6 +39,7 @@ export const upload = async (req, res) => {
         await post.save();
         const user = await User.findById(userId);
         user.posts.push(post._id);
+        user.belong.push(post._id);
         await user.save();
         return res.status(200).json({ success: true, _id: post._id });
     } catch (e) {
@@ -151,7 +152,10 @@ export const getList = async (req, res) => {
     }
 
     try {
-        const list = await Post.find(findObj).sort(sort).skip(skip).limit(10);
+        const list = await Post.find(findObj)
+            .sort(sortKey)
+            .skip(skip)
+            .limit(10);
         return res.status(200).json({ success: true, list: list });
     } catch (e) {
         return console.log(e);

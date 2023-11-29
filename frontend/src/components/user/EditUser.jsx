@@ -124,6 +124,22 @@ function EditUser() {
         }
     }, [depart]);
 
+    useEffect(() => {
+        const body = {
+            _id: params.id,
+        };
+        axios.post("/api/user/getuserinfo", body).then((res) => {
+            if (res.data.success) {
+                setName(res.data.user.name);
+                setEmail(res.data.user.email);
+                setGrade(res.data.user.grade);
+                setDepart(res.data.user.department);
+                setMajor(res.data.user.major);
+                setDesc(res.data.user.description);
+            }
+        });
+    }, []);
+
     const handleEdit = async (e) => {
         e.preventDefault();
         if (!(name && email && grade && depart && major)) {
@@ -143,7 +159,8 @@ function EditUser() {
             .post("/api/user/edit", body)
             .then((res) => {
                 if (res.data.success) {
-                    dispatch(loginUser({ name: name, email: email }));
+                    const { _id, name, email } = res.data.userInfo;
+                    dispatch(loginUser({ _id: _id, name: name, email: email }));
                     navigate(`/user/${params.id}`);
                 } else {
                     return setAlertMsg(
@@ -289,7 +306,9 @@ function EditUser() {
                     </div>
                 </div>
                 <Editor content={desc} setContent={setDesc} />
-                <button onClick={(e) => handleEdit(e)}>제출</button>
+                <button className="editUser" onClick={(e) => handleEdit(e)}>
+                    제출
+                </button>
             </DefaultForm>
         </FormContainer>
     );

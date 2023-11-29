@@ -60,3 +60,50 @@ export const getUserInfo = async (req, res) => {
     const user = await User.findById(req.body._id);
     return res.status(200).json({ success: true, user: user });
 };
+
+export const edit = async (req, res) => {
+    const { uid, name, email, grade, depart, major, desc } = req.body;
+    try {
+        const user = await User.findByIdAndUpdate(uid, {
+            name: name,
+            email: email,
+            grade: grade,
+            department: depart,
+            major: major,
+            description: desc,
+        });
+        return res.status(200).json({
+            success: true,
+            userInfo: { _id: user._id, name: user.name, email: user.email },
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(304).json({ success: false });
+    }
+};
+
+export const getAbout = async (req, res) => {
+    const { uid, post, seen, like, belong } = req.body;
+    try {
+        let list = [];
+        if (post) {
+            const user = await User.findById(uid).populate("posts");
+            list = user.posts;
+        } else if (seen) {
+            const user = await User.findById(uid).populate("seen");
+            list = user.seen;
+        } else if (like) {
+            const user = await User.findById(uid).populate("likes");
+            list = user.likes;
+        } else if (belong) {
+            const user = await User.findById(uid).populate("belong");
+            list = user.belong;
+        } else {
+            list = [];
+        }
+        return res.status(200).json({ success: true, list: list });
+    } catch (e) {
+        console.log(e);
+        return res.status(304).json({ success: false });
+    }
+};

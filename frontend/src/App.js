@@ -16,6 +16,7 @@ import Post from "./components/post/Post";
 import Error404 from "./components/Error404";
 import Edit from "./components/post/Edit";
 import EditUser from "./components/user/EditUser.jsx";
+import About from "./components/user/About.jsx";
 
 function App() {
     const user = useSelector((state) => state.user);
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/404" element={<Error404 />}></Route>
                 <Route path="/user/:id" element={<MyPage />}></Route>
                 <Route path="/user/edit/:id" element={<EditUser />}></Route>
+                <Route path="/user/:id/about" element={<About />}></Route>
                 <Route path="/post/:id" element={<Post />}></Route>
                 <Route path="/post/edit/:id" element={<Edit />}></Route>
             </Routes>

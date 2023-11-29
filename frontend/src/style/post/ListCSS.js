@@ -30,6 +30,9 @@ export const ListContainer = styled.div`
             }
         }
     }
+    &.about {
+        width: 100%;
+    }
 `;
 
 export const StyledListItem = styled.div`
