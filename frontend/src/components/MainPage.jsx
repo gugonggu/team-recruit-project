@@ -1,7 +1,11 @@
-import React from "react";
+import List from "./post/List";
 
 function MainPage() {
-    return <div>MainPage</div>;
+    return (
+        <div>
+            <List />
+        </div>
+    );
 }
 
 export default MainPage;
