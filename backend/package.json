@@ -2,6 +2,10 @@
     "name": "backend",
     "type": "module",
     "version": "1.0.0",
+    "engines": {
+        "node": "20.x",
+        "npm": "9.x"
+    },
     "description": "",
     "main": "src/init.js",
     "scripts": {
