@@ -33,7 +33,10 @@ function List() {
             skip: 0,
         };
         axios
-            .post("/api/post/list", body)
+            .post(
+                "https://team-recruit-project.onrender.com/api/post/list",
+                body
+            )
             .then((res) => {
                 if (res.data.success) {
                     setList([...res.data.list]);
@@ -59,7 +62,10 @@ function List() {
             skip: skip,
         };
         axios
-            .post("/api/post/list", body)
+            .post(
+                "https://team-recruit-project.onrender.com/api/post/list",
+                body
+            )
             .then((res) => {
                 if (res.data.success) {
                     setList([...list, ...res.data.list]);
