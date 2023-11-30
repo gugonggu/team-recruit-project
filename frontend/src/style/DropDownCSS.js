@@ -17,12 +17,15 @@ export const DropDownLi = styled.li`
     width: calc(100% - 20px);
     display: flex;
     align-items: center;
-    justify-content: center;
     :last-child {
         border-radius: 0 0 10px 10px;
     }
     &:hover {
         background-color: lightgray;
+    }
+    @media (max-width: 450px) {
+        padding: 5px 10px;
+        font-size: 14px;
     }
 `;
 

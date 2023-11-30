@@ -16,6 +16,7 @@ import useDetectClose from "../../hooks/useDetectClose.js";
 import DropDown from "../DropDown";
 
 function SignUp() {
+    const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -143,7 +144,7 @@ function SignUp() {
             major: major,
         };
         axios
-            .post("/api/user/signup", body)
+            .post(`${PROXY}/api/user/signup`, body)
             .then((res) => {
                 if (res.data.success) {
                     const { _id, name, email } = res.data.user;

@@ -3,6 +3,12 @@ import styled from "@emotion/styled";
 export const StyledList = styled.div`
     margin: 50px 20px;
     display: flex;
+    @media (max-width: 450px) {
+        flex-direction: column-reverse;
+    }
+    @media (max-width: 450px) {
+        margin: 50px 10px;
+    }
 `;
 
 export const ListContainer = styled.div`
@@ -31,6 +37,9 @@ export const ListContainer = styled.div`
         }
     }
     &.about {
+        width: 100%;
+    }
+    @media (max-width: 450px) {
         width: 100%;
     }
 `;
@@ -145,5 +154,10 @@ export const StyledListController = styled.div`
                 border-bottom: 1px solid #e11837;
             }
         }
+    }
+    @media (max-width: 450px) {
+        width: 100%;
+        margin-left: 0px;
+        margin-bottom: 20px;
     }
 `;

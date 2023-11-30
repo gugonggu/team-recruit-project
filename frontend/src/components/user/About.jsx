@@ -10,6 +10,7 @@ import { StyledList, ListContainer } from "../../style/post/ListCSS.js";
 import { StyledLink } from "../../style/HeaderCSS.js";
 
 function About() {
+    const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
     const params = useParams();
     const navigate = useNavigate();
     const user = useSelector((state) => state.user.user);
@@ -34,7 +35,7 @@ function About() {
             belong: belong,
         };
         axios
-            .post("/api/user/getabout", body)
+            .post(`${PROXY}/api/user/getabout`, body)
             .then((res) => {
                 if (res.data.success) {
                     setList(res.data.list);
@@ -50,7 +51,7 @@ function About() {
                 <Spinner />
             ) : (
                 <ListContainer className="about">
-                    {list ? (
+                    {list.length !== 0 ? (
                         list.map((v, i) => {
                             return (
                                 <StyledLink to={`/post/${v._id}`} key={i}>
@@ -59,7 +60,7 @@ function About() {
                             );
                         })
                     ) : (
-                        <p>아직 아무런 데이터가 없습니다</p>
+                        <p>아직 데이터가 없습니다</p>
                     )}
                 </ListContainer>
             )}

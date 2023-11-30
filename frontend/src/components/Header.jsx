@@ -47,9 +47,6 @@ function Header() {
         <HeaderDiv>
             <StyledLogoLink to="/">DRP</StyledLogoLink>
             <Nav>
-                <li>
-                    <StyledLink to="/upload">새 모집 글 작성</StyledLink>
-                </li>
                 {user.email ? (
                     <div ref={dropdownRef}>
                         <input
@@ -62,6 +59,11 @@ function Header() {
                         </div>
                         {isOpen && (
                             <HeaderDropdownUl>
+                                <HeaderDropdownLi>
+                                    <StyledLink to="/upload">
+                                        새 모집 글 작성
+                                    </StyledLink>
+                                </HeaderDropdownLi>
                                 {dropdownList.map((v, i) => {
                                     return (
                                         <HeaderDropdown

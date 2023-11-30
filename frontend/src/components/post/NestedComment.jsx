@@ -80,7 +80,7 @@ function NestedComment({
                         value={editComment}
                         onChange={(e) => setEditComment(e.currentTarget.value)}
                     ></input>
-                    <button onClick={(e) => handleEdit(e)}>답글 수정</button>
+                    <button onClick={(e) => handleEdit(e)}>수정</button>
                 </EditNestedComment>
             ) : (
                 <p className="nestedCommentContent">{content}</p>

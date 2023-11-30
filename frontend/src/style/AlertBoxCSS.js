@@ -12,9 +12,16 @@ export const AlertBox = styled(motion.div)`
     border-left: 10px solid tomato;
     border-radius: 10px;
     padding: 10px;
+    margin-top: 30px;
     background-color: #ffd7d5;
     div {
         margin-left: 10px;
+        p:first-of-type {
+            margin-bottom: 0px !important;
+        }
+        p:last-of-type {
+            margin-top: 0px !important;
+        }
     }
     .close {
         position: absolute;

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import useDetectClose from "../../hooks/useDetectClose";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import { loginUser } from "../../reducer/userSlice";
 
@@ -16,6 +16,7 @@ import DropDown from "../DropDown";
 import Editor from "../post/Editor";
 
 function EditUser() {
+    const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const params = useParams();
@@ -128,7 +129,7 @@ function EditUser() {
         const body = {
             _id: params.id,
         };
-        axios.post("/api/user/getuserinfo", body).then((res) => {
+        axios.post(`${PROXY}/api/user/getuserinfo`, body).then((res) => {
             if (res.data.success) {
                 setName(res.data.user.name);
                 setEmail(res.data.user.email);
@@ -156,7 +157,7 @@ function EditUser() {
             desc: desc,
         };
         axios
-            .post("/api/user/edit", body)
+            .post(`${PROXY}/api/user/edit`, body)
             .then((res) => {
                 if (res.data.success) {
                     const { _id, name, email } = res.data.userInfo;

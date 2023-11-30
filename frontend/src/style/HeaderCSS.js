@@ -23,6 +23,9 @@ export const HeaderDiv = styled.div`
         }
     }
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    @media (max-width: 450px) {
+        margin: 10px;
+    }
 `;
 
 export const StyledLink = styled(Link)`

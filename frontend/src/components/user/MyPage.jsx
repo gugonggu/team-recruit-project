@@ -6,6 +6,7 @@ import parse from "html-react-parser";
 import { MyPageContainer } from "../../style/user/MyPageCSS.js";
 
 function MyPage() {
+    const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
     const params = useParams();
     const user = useSelector((state) => state.user.user);
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ function MyPage() {
         const body = {
             _id: params.id,
         };
-        axios.post("/api/user/getuserinfo", body).then((res) => {
+        axios.post(`${PROXY}/api/user/getuserinfo`, body).then((res) => {
             if (res.data.success) {
                 setDbUser(res.data.user);
             }
@@ -44,7 +45,7 @@ function MyPage() {
                 {dbUser.description ? (
                     parse(dbUser.description)
                 ) : (
-                    <p className="noDesc">아직 자기소개가 없습니다.</p>
+                    <p className="noDesc">아직 등록된 자기소개가 없습니다.</p>
                 )}
             </section>
             {dbUser._id === user._id ? (

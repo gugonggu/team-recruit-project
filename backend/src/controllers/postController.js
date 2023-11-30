@@ -357,6 +357,9 @@ export const acceptApplication = async (req, res) => {
         }
         post.applicants.splice(index, 1);
         post.members.push(applicationId);
+        if (post.members.length >= post.numOfRecruit) {
+            post.numOfRecruit = false;
+        }
         const user = await User.findById(applicationId);
         user.registered.splice(user.registered.indexOf(pid), 1);
         user.belong.push(pid);

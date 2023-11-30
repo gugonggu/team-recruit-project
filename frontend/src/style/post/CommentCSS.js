@@ -40,6 +40,16 @@ export const StyledComment = styled.div`
     .content {
         margin: 5px 0 0 10px;
     }
+    @media (max-width: 450px) {
+        div {
+            a {
+                font-size: 14px;
+            }
+            p {
+                font-size: 12px;
+            }
+        }
+    }
 `;
 
 export const NoComments = styled.div`
@@ -61,6 +71,13 @@ export const EditComent = styled.div`
             opacity: 0.8;
         }
     }
+    @media (max-width: 450px) {
+        button {
+            padding: 5px 10px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+    }
 `;
 
 export const AddNestedComment = styled.div`
@@ -74,6 +91,7 @@ export const AddNestedComment = styled.div`
         padding: 5px 20px;
         border-radius: 20px;
         font-size: 16px;
+        white-space: nowrap;
         &:hover {
             opacity: 0.8;
         }
@@ -84,7 +102,9 @@ export const StyledNestedComment = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start !important;
-    margin-left: 20px !important;
+    margin-left: 10px !important;
+    padding-left: 10px !important;
+    border-left: 1px solid lightgray;
     width: 100%;
     .nestedCommentHeader {
         width: 100%;
@@ -117,6 +137,17 @@ export const EditNestedComment = styled.div`
         cursor: pointer;
         &:hover {
             opacity: 0.8;
+        }
+    }
+    @media (max-width: 450px) {
+        input {
+            width: 80%;
+        }
+        button {
+            width: calc(20% - 20px);
+            white-space: nowrap;
+            font-size: 14px;
+            padding: 5px;
         }
     }
 `;

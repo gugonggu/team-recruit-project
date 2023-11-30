@@ -6,7 +6,7 @@ export const FormContainer = styled.div`
 `;
 
 export const DefaultForm = styled.form`
-    width: 35%;
+    width: 50%;
     background-color: white;
     margin: 20px;
     padding: 50px;
@@ -106,16 +106,27 @@ export const DefaultForm = styled.form`
     button {
         background-color: #e11837;
         color: white;
-        width: 90%;
+        width: 100%;
         height: 40px;
         margin: auto;
-        margin-top: 40px;
+        margin-top: 50px;
         border: none;
         border-radius: 20px;
         font-size: 18px;
         cursor: pointer;
         &.editUser {
-            margin-top: 90px !important;
+            margin-top: 120px !important;
+        }
+    }
+    @media (max-width: 450px) {
+        width: 80%;
+        margin: 10px;
+        padding: 30px;
+        .selectDiv {
+            flex-direction: column;
+            div {
+                width: 100%;
+            }
         }
     }
 `;
@@ -237,5 +248,44 @@ export const PostForm = styled.form`
         width: 100px;
         font-size: 18px;
         cursor: pointer;
+    }
+
+    .stateSet {
+        display: flex;
+        flex-direction: column;
+        label {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        input {
+            border: none;
+            background-color: white;
+            border-bottom: 1px solid lightgray;
+            margin: 0 20px;
+            padding: 10px;
+            font-size: 16px;
+            &:active {
+                border-bottom: 1px solid #e11837;
+            }
+        }
+    }
+
+    @media (max-width: 450px) {
+        padding: 0px 10px 20px 10px;
+        margin: 20px 0px;
+        width: 90%;
+        section {
+            h1 {
+                padding: 20px 5px;
+            }
+        }
+        .input_row {
+            flex-direction: column;
+            .each_input {
+                width: 100% !important;
+                margin-bottom: 20px;
+            }
+            margin-top: 0px !important;
+        }
     }
 `;

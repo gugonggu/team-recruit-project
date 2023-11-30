@@ -19,7 +19,6 @@ function Edit() {
     const params = useParams();
     const navigate = useNavigate();
 
-    const [postInfo, setPostInfo] = useState({});
     const [type, setType] = useState("");
     const [num, setNum] = useState("");
     const [grade, setGrade] = useState("");
@@ -29,6 +28,7 @@ function Edit() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [chatLink, setChatLink] = useState("");
+    const [recruiting, setRecruiting] = useState(true);
 
     const [alertMsg, setAlertMsg] = useState("");
 
@@ -147,7 +147,6 @@ function Edit() {
                     if (res.data.post.author._id !== user._id) {
                         navigate("/");
                     }
-                    setPostInfo(res.data.post);
                     setType(res.data.post.projectType);
                     setNum(res.data.post.numOfRecruit);
                     setGrade(res.data.post.grade);
@@ -157,6 +156,7 @@ function Edit() {
                     setTitle(res.data.post.title);
                     setContent(res.data.post.content);
                     setChatLink(res.data.post.link);
+                    setRecruiting(res.data.post.recruiting);
                 }
             })
             .catch((e) => console.log(e));
@@ -393,6 +393,14 @@ function Edit() {
                                 onChange={(e) => setEnd(e.currentTarget.value)}
                             />
                         </div>
+                    </div>
+                    <div className="stateSet">
+                        <label>모집 상태</label>
+                        <input
+                            type="button"
+                            value={recruiting ? "모집중" : "모집 마감"}
+                            onClick={() => setRecruiting(!recruiting)}
+                        />
                     </div>
                 </section>
                 <section>

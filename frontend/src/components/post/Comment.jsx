@@ -117,9 +117,7 @@ function Comment({
                         value={editComment}
                         onChange={(e) => setEditComment(e.currentTarget.value)}
                     ></input>
-                    <button onClick={(e) => handleEditComment(e)}>
-                        댓글 수정
-                    </button>
+                    <button onClick={(e) => handleEditComment(e)}>수정</button>
                 </EditComent>
             ) : (
                 <p className="content">{content}</p>
@@ -134,7 +132,7 @@ function Comment({
                         }
                     />
                     <button onClick={(e) => handleAddNestedComment(e)}>
-                        답글 등록
+                        등록
                     </button>
                 </AddNestedComment>
             ) : null}

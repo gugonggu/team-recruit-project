@@ -7,6 +7,7 @@ import { loginUser } from "../../reducer/userSlice";
 import { FormContainer, DefaultForm } from "../../style/FormCSS.js";
 
 function Login() {
+    const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -25,7 +26,7 @@ function Login() {
                 email: email,
                 pw: pw,
             };
-            axios.post("/api/user/login", body).then((res) => {
+            axios.post(`${PROXY}/api/user/login`, body).then((res) => {
                 if (res.data.success) {
                     const { _id, name, email } = res.data.user;
                     dispatch(loginUser({ _id, name, email }));

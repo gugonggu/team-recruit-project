@@ -4,6 +4,7 @@ export const SpinnerContainer = styled.div`
     box-shadow: none !important;
     background-color: transparent !important;
     height: 50vh !important;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;

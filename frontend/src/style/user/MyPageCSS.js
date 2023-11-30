@@ -34,4 +34,12 @@ export const MyPageContainer = styled.div`
             opacity: 0.8;
         }
     }
+
+    @media (max-width: 450px) {
+        section {
+            .userInfo {
+                flex-direction: column;
+            }
+        }
+    }
 `;

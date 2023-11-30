@@ -8,7 +8,7 @@ export const PostContainer = styled.div`
         margin: 20px;
         padding: 10px 20px;
         &:first-of-type {
-            margin-top: 80px;
+            margin-top: 30px;
         }
         div {
             background-color: transparent;
@@ -21,23 +21,24 @@ export const PostContainer = styled.div`
             }
         }
         &.title {
+            overflow: hidden;
             div {
                 display: flex;
                 width: 100%;
-                .postMeta {
-                    float: right;
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-end;
-                    p {
-                        margin-right: 10px;
-                    }
-                    svg {
-                        margin-right: 5px;
-                        &.star {
-                            color: #ffff8c;
-                            cursor: pointer;
-                        }
+            }
+            .postMeta {
+                float: right;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                p {
+                    margin-right: 10px;
+                }
+                svg {
+                    margin-right: 5px;
+                    &.star {
+                        color: #ffff8c;
+                        cursor: pointer;
                     }
                 }
             }
@@ -57,8 +58,6 @@ export const PostContainer = styled.div`
                     }
                 }
             }
-        }
-        &.postContent {
         }
         &.postManage {
             padding-bottom: 20px;
@@ -124,6 +123,27 @@ export const PostContainer = styled.div`
             }
         }
     }
+    @media (max-width: 450px) {
+        div {
+            margin: 10px;
+            &.postInformation {
+                .postInfoRow {
+                    flex-direction: column;
+                    .postInfoEach {
+                        width: 100%;
+                    }
+                }
+            }
+            &.postComments {
+                input {
+                    width: 80% !important;
+                }
+                .commentButton {
+                    width: 20% !important;
+                }
+            }
+        }
+    }
 `;
 
 export const ApplicationContainer = styled.div`
@@ -161,6 +181,19 @@ export const ApplicationContainer = styled.div`
             }
         }
     }
+    @media (max-width: 450px) {
+        div {
+            input {
+                width: 85%;
+            }
+            button {
+                width: 15%;
+                margin-left: 5px;
+                padding: 5px;
+                font-size: 14px;
+            }
+        }
+    }
 `;
 
 export const ManageContainer = styled.div`
@@ -192,6 +225,27 @@ export const ManageContainer = styled.div`
                         &:hover {
                             opacity: 0.8;
                         }
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 450px) {
+        div {
+            .application {
+                div {
+                    a {
+                        font-size: 14px;
+                    }
+                    span {
+                        font-size: 14px;
+                    }
+                }
+                .applyButtonContainer {
+                    margin-right: 10px;
+                    button {
+                        padding: 5px 10px;
+                        font-size: 14px;
                     }
                 }
             }
