@@ -20,6 +20,7 @@ import {
 import { FaCaretUp, FaCaretDown } from "react-icons/fa6";
 
 function Header() {
+    const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
     const user = useSelector((state) => state.user.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -35,7 +36,7 @@ function Header() {
     ];
 
     const logoutHandler = () => {
-        axios.post("/api/user/logout").then((res) => {
+        axios.post(`${PROXY}/api/user/logout`).then((res) => {
             if (res.data.success) {
                 dispatch(clearUser());
             }

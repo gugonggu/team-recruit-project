@@ -9,6 +9,7 @@ import ListController from "./ListController";
 import { StyledList, ListContainer } from "../../style/post/ListCSS.js";
 
 function List() {
+    const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
     const [searchKey, setSearchKey] = useState("");
     const [typeFilter, setTypeFilter] = useState("");
     const [departFilter, setDepartFilter] = useState("");
@@ -20,8 +21,6 @@ function List() {
 
     const [skip, setSkip] = useState(0);
     const [loadMore, setLoadMore] = useState(true);
-
-    const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
 
     const getPostList = () => {
         setSkip(0);

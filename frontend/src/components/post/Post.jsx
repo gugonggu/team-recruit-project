@@ -20,6 +20,7 @@ import moment from "moment";
 import "moment/locale/ko";
 
 function Post() {
+    const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
     const params = useParams();
     const navigate = useNavigate();
     const user = useSelector((state) => state.user.user);
@@ -40,7 +41,7 @@ function Post() {
             _id: params.id,
             uid: user._id,
         };
-        axios.post("/api/post/getpostinfo", body).then((res) => {
+        axios.post(`${PROXY}/api/post/getpostinfo`, body).then((res) => {
             if (res.data.success) {
                 setPostInfo(res.data.post);
                 setLoadingFlag(true);
@@ -69,7 +70,7 @@ function Post() {
             uid: user._id,
         };
         axios
-            .post("/api/post/postlike", body)
+            .post(`${PROXY}/api/post/postlike`, body)
             .then((res) => {
                 if (res.data.success) {
                     setUserLike(!userLike);
@@ -94,7 +95,7 @@ function Post() {
             content: comment,
         };
         axios
-            .post("/api/post/addcomment", body)
+            .post(`${PROXY}/api/post/addcomment`, body)
             .then((res) => {
                 if (res.data.success) {
                     window.location.reload();
@@ -110,7 +111,7 @@ function Post() {
                 _id: params.id,
             };
             axios
-                .post("/api/post/delete", body)
+                .post(`${PROXY}/api/post/delete`, body)
                 .then((res) => {
                     if (res.data.success) {
                         alert("게시글이 성공적으로 삭제되었습니다.");
@@ -134,7 +135,7 @@ function Post() {
             word: word,
         };
         axios
-            .post("/api/post/application", body)
+            .post(`${PROXY}/api/post/application`, body)
             .then((res) => {
                 if (res.data.success) {
                     window.location.reload();
@@ -151,7 +152,7 @@ function Post() {
                 pid: postInfo._id,
             };
             axios
-                .post("/api/post/acceptapplication", body)
+                .post(`${PROXY}/api/post/acceptapplication`, body)
                 .then((res) => {
                     if (res.data.success) {
                         window.location.reload();
@@ -169,7 +170,7 @@ function Post() {
                 pid: postInfo._id,
             };
             axios
-                .post("/api/post/refuseapplication", body)
+                .post(`${PROXY}/api/post/refuseapplication`, body)
                 .then((res) => {
                     if (res.data.success) {
                         window.location.relaod();

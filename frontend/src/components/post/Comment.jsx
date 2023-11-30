@@ -20,6 +20,7 @@ function Comment({
     createdAt,
     nestedComments,
 }) {
+    const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
     const [openEditComment, setOpenEditComment] = useState(false);
     const [editComment, setEditComment] = useState(content);
     const [addNestedComment, setAddNestedComment] = useState("");
@@ -36,7 +37,7 @@ function Comment({
             content: editComment,
         };
         axios
-            .post("/api/post/editcomment", body)
+            .post(`${PROXY}/api/post/editcomment`, body)
             .then((res) => {
                 if (res.data.success) {
                     window.location.reload();
@@ -53,7 +54,7 @@ function Comment({
                 pId: postId,
             };
             axios
-                .post("/api/post/deletecomment", body)
+                .post(`${PROXY}/api/post/deletecomment`, body)
                 .then((res) => {
                     if (res.data.success) {
                         window.location.reload();
@@ -71,7 +72,7 @@ function Comment({
             content: addNestedComment,
         };
         axios
-            .post("/api/post/addnestedcomment", body)
+            .post(`${PROXY}/api/post/addnestedcomment`, body)
             .then((res) => {
                 if (res.data.success) {
                     window.location.reload();

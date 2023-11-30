@@ -14,6 +14,7 @@ import { AlertBox } from "../../style/AlertBoxCSS.js";
 import DropDown from "../DropDown.jsx";
 
 function Upload() {
+    const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
     const user = useSelector((state) => state.user.user);
     const navigate = useNavigate();
 
@@ -167,7 +168,7 @@ function Upload() {
             userId: user._id,
         };
         axios
-            .post("/api/post/upload", body)
+            .post(`${PROXY}/api/post/upload`, body)
             .then((res) => {
                 if (res.data.success) {
                     navigate(`/post/${res.data._id}`);

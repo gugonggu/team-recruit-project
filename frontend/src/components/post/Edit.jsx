@@ -14,6 +14,7 @@ import { AlertBox } from "../../style/AlertBoxCSS.js";
 import DropDown from "../DropDown.jsx";
 
 function Edit() {
+    const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
     const user = useSelector((state) => state.user.user);
     const params = useParams();
     const navigate = useNavigate();
@@ -140,7 +141,7 @@ function Edit() {
             _id: params.id,
         };
         axios
-            .post("/api/post/getpostinfo", body)
+            .post(`${PROXY}/api/post/getpostinfo`, body)
             .then((res) => {
                 if (res.data.success) {
                     if (res.data.post.author._id !== user._id) {
@@ -192,7 +193,7 @@ function Edit() {
             _id: params.id,
         };
         axios
-            .post("/api/post/edit", body)
+            .post(`${PROXY}/api/post/edit`, body)
             .then((res) => {
                 if (res.data.success) {
                     navigate(`/post/${params.id}`);
