@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-
 import { Routes, Route } from "react-router-dom";
 
 import all from "./style/reset.js";
@@ -19,12 +16,6 @@ import EditUser from "./components/user/EditUser.jsx";
 import About from "./components/user/About.jsx";
 
 function App() {
-    const user = useSelector((state) => state.user);
-
-    useEffect(() => {
-        console.log(user);
-    }, [user]);
-
     return (
         <>
             <Global styles={all} />
