@@ -21,6 +21,8 @@ function List() {
     const [skip, setSkip] = useState(0);
     const [loadMore, setLoadMore] = useState(true);
 
+    const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
+
     const getPostList = () => {
         setSkip(0);
         const body = {
@@ -33,7 +35,7 @@ function List() {
             skip: 0,
         };
         axios
-            .post("/api/post/list", body)
+            .post(`${PROXY}/api/post/list`, body)
             .then((res) => {
                 if (res.data.success) {
                     setList([...res.data.list]);
@@ -59,7 +61,7 @@ function List() {
             skip: skip,
         };
         axios
-            .post("/api/post/list", body)
+            .post(`${PROXY}/api/post/list`, body)
             .then((res) => {
                 if (res.data.success) {
                     setList([...list, ...res.data.list]);
